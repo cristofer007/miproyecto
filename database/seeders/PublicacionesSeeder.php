@@ -10,7 +10,7 @@ use App\Models\Publicacion;
 
 class PublicacionesSeeder extends Seeder
 {
-    /**
+    /**-
      * Run the database seeds.
      *
      * @return void

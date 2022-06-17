@@ -10,7 +10,7 @@ use App\Models\User;
 
 class ComentariosSeeder extends Seeder
 {
-    /**
+    /**-
      * Run the database seeds.
      *
      * @return void

@@ -53,7 +53,7 @@ if (!empty($_GET))
 <!doctype html>
 <html lang="en" style="max-height:100%; min-height:100%">
     <head>
-            <!-- Required meta tags -->
+            <!-- Required meta tags --->
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
 

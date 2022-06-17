@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class GruposSeeder extends Seeder
 {
-    /**
+    /**-
      * Run the database seeds.
      *
      * @return void
