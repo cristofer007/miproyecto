@@ -9,7 +9,7 @@
                                 <img src="iconos/solicitudesIcono.png" width="30.5%">
                         </div>
                 </div>
-
+<!--*****-->
                 <div class="col border border-danger text-center px-0" id="pestanaRecursos" onclick="irARecursos()">
 
                         <div class="p-0 m-0 texto-pestana">

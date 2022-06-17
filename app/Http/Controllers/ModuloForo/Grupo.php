@@ -47,7 +47,7 @@ class Grupo
     
     public function getCanales()
     {
-        Log::info("sarahZX te beso los pies cuando sea");
+        
         $canales = $this->canales->getCanales();
         Log::info($canales);
         return $canales;

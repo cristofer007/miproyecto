@@ -56,7 +56,7 @@ class Grupos
                 $arrayGrupo["descripcion"] = $grupo->getDescripcion();
                 $arrayGrupo["encargado"] = $grupo->getEncargado();
                 $canalesGrupo = $grupo->getCanales();
-                Log::info("sarahZX pateame la cara, me encanta si lo haces tu");
+                
                 Log::info($canalesGrupo);
                 
                 $arrayGrupo["canales"] = $canalesGrupo;

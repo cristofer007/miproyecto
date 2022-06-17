@@ -1,6 +1,6 @@
 <?php
 	$mode = 0; //0 admin, 1 tecnico.
-	$codigo = 0; //0 admin, 1 tecnico.
+	$codigo = 0; //0 admin, 1 tecnico..
 	$backlink = '/';
 
 	if (empty($_GET))

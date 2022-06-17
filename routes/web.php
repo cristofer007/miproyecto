@@ -7,7 +7,7 @@ use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\ModuloSolicitudes\SolicitudesController;
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Web Routes.
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
