@@ -1,0 +1,1 @@
+../resources/views/vistaadmin.blade.php

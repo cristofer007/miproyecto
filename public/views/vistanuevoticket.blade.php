@@ -1,0 +1,1 @@
+../resources/views/vistanuevoticket.blade.php

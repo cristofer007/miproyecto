@@ -1,0 +1,1 @@
+../resources/views/adminfooter.php

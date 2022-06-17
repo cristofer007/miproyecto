@@ -1,0 +1,1 @@
+../resources/views/vistagestionpersonas.blade.php
