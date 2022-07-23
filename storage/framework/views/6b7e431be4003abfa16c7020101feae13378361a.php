@@ -1,76 +1,53 @@
 <!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<html lang="en" style="max-height:100%; min-height:100%">
-    <head>
-            <!-- Required meta tags -->
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Bootstrap CSS -->
+		<link href="/styles/style.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-            <!-- Bootstrap CSS -->
-            <link href="/styles/style.css" rel="stylesheet">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-            <title>Panel de administración</title>
-            <style>
-                .apuntable:hover
-                {
-                    cursor: pointer;
-                }
-                
-                #botonNuevoTicket
-                {
-                   
-                }
-            </style>
-    </head>
-
-
-
-
-
-<!--¨********************************************************************************************************************--->
-<!--¨*********************************************************************************************--->
-<!--¨********************************************************************************************************************--->
-<!--        -->
-        <body>
-            <header class="container text-white p-0 w-100" style="position:fixed; top: 0% ;background-image:linear-gradient(50deg, #f7971e, #ffd200);">
-                <div class="row h-100 px-0">
-                    <h2 style="" class="text-center py-2 px-0">Sistema de ayuda</h2>
-                    <div style="position:absolute; right:0%;" class="col-3 apuntable p-0 align-middle text-end mb-0 me-2 mt-3">
-                         <a class="w-100 align-self-center " href="/vistaindex" style="text-decoration:none; color:white">
-                             <img src="/iconos/salirIcono.png" style="height:1.75em">Salir
-                         </a>
-                     </div>
-                 </div>
-            </header>
-            <div style="position: absolute; top:7.5%; height:85.5%; width:100% ">
-                <div class="row w-100 mx-auto" style="position: absolute; height:5.5%">
-                        <div class="col  text-center p-0" >
-                                <a href="/vistaadmin" class="align-middle" >Nuevos</a>
-                        </div>
-                        <div class="col  text-center p-0">
-                                <a href="/vistaadmin.blade.php?tipo=1" class="align-middle">Asignados</a>
-                        </div>
-                        <div class="col text-center p-0">
-                                <a href="/vistaadmin.blade.php?tipo=2" class="align-middle">Resueltos</a>
-                        </div>
-                        <div class="col  text-center p-0">
-                                <b class="align-middle">Nuevo ticket </b>
-                        </div>
-                </div>
-		<div class="container border border-danger p-1 m-0 bg-primary" style="position:absolute; width: 100% ;height:95% ;top:5%; overflow:scroll">
-                        
-			<div class="container bg-light mb-4 p-2">
+		<title>Panel de administración</title>
+	</head>
+	<body>
+		<div class="container">
+			<h2>Tele-Ticket</h2>
+			<div class="row justify-content-end">
+				<div class="col-auto">
+					<a class="btn btn-primary" href="/index.php">Salir</a>
+				</div>
+			</div>
+			<ul class="nav mb-4">
+				<li class="nav-item">
+					<a class="nav-link active" href="/vistaadmin">Tickets</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/vistagestionpersonas">Usuarios</a>
+				</li>
 				
-                                
+			</ul>
+
+			<div class="container bg-light mb-4 p-2">
+				<div class="row mb-4">
+					<div class="col-2 " >
+						<a href="/vistaadmin" >Nuevos</a>
+					</div>
+					<div class="col-2">
+						<a href="/vistaadmin.blade.php?tipo=1">Asignados</a>
+					</div>
+					<div class="col-2">
+						<a href="/vistaadmin.blade.php?tipo=2">Resueltos</a>
+					</div>
+					<div class="col-2">
+						Nuevo ticket
+					</div>
+				</div>
 				<div id="alertLoc">
 				</div>
-                                <div>
-                                    <h3 class="text-center">Crear nuevo ticket</h3>
-                                </div> 
-                                
 				<form>
-					<p class="text-white bg-primary py-1 w-100 fw-bold text-center">Usuario</p>
+					<p class="text-white bg-primary p-1">Usuario</p>
 					<div class="container pb-3">
 						<div class="mb-1">
 							<div class="row justify-space-evenly">
@@ -90,7 +67,7 @@
 							<label class="form-check-label" for="exampleCheck1">Aviso ticket</label> <!-- Sin input -->
 						</div>
 					</div>
-					<p class="text-white bg-primary py-1 w-100 fw-bold text-center">Ticket</p>
+					<p class="text-white bg-primary p-1">Ticket</p>
 					<div class="container pb-3">
 						<div class="row justify-space-evenly">
 							<div class ="col">
@@ -113,7 +90,7 @@
 						<div class="mb-2">
 							<label for="fuenteI" class="form-label">Fuente</label>
 							<select class="form-select" id="fuenteI" aria-label="Select">
-								<option value="0" selected>Teléfono</option>
+								<option value="0" selected>Telefono</option>
 								<option value="1">Correo</option>
 								<option value="2">Chat</option>
 								<option value="3">Formulario</option>
@@ -147,14 +124,12 @@
 						</div>
 					</div>
 					<p class="text-danger" id="errorO"></p>
-                                        <div class="text-end">
-                                            <button type="button" class="btn btn-primary me-0" onClick="sendFun()">Crear ticket</button>
-                                        </div>
+					<button type="button" class="btn btn-primary" onClick="sendFun()">Abrir ticket</button>
 				</form>
 
-			</div>
+			
 		</div>
-            </div>
+		
 
 		<script>
 		var usrList = [
@@ -170,17 +145,17 @@
 		];
 		</script>
 
-		<div class="modal fade h-75" style="top:8%;" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
-				<div class="modal-content p-0" >
-					<div class="modal-header text-white p-2 w-100" style="position:sticky; background-image:linear-gradient(50deg, #457fca, #5691c8)">
-						<h5 class="modal-title " id="exampleModalLabel">Cambiar usuario</h5>
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Cambiar usuario</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<div class="modal-body" >
-                                        
-					<form class="">
-						<p class="lead fw-bold text-center">Agregar usuario</p>
+					<div class="modal-body">
+
+					<form class="mb-5">
+						<p class="lead">Agregar usuario</p>
 						<div class="mb-3">
 							<label for="nombreIMf" class="form-label">Nombre</label>
 							<input type="text" class="form-control" id="nombreIMf">
@@ -189,12 +164,10 @@
 							<label for="correoIMf" class="form-label">Correo</label>
 							<input type="email" class="form-control" id="correoIMf">
 						</div>
-                                                <div class=" text-end">
-                                                    <button type="button" class="btn btn-primary" onClick="addUser()" data-bs-dismiss="modal">Agregar</button>
-                                                </div>
-                                        </form>
-                                        <hr class="w-100">
-					<p class="lead fw-bold text-center">Buscar existente</p>
+						<button type="button" class="btn btn-primary" onClick="addUser()" data-bs-dismiss="modal">Agregar</button>
+					</form>
+
+					<p class="lead">Buscar existente</p>
 					<ul class="list-group" id="listaModal">
 												
 					</ul>
@@ -206,7 +179,7 @@
 				</div>
 			</div>
 		</div>
-                <?php echo $__env->make('adminfooter', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 		<script>
 			function sendFun()
 			{
@@ -314,7 +287,7 @@
 								document.getElementById("listaModal").appendChild(node);
 							}
 							else
-								alert('Éste correo ya existe en el sistema.');
+								alert('Este correo ya existe en el sistema.');
 						} else {
 							console.error(xhr.statusText);
 						}

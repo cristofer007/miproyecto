@@ -4,17 +4,30 @@
 	{
 		$invalido = true;
 		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
-		$stmt = $dbh->prepare("SELECT token from Cuentas WHERE email = :name AND password = :pass");
+		$stmt = $dbh->prepare("SELECT id_cuenta, token from Cuentas WHERE email = :name AND password = :pass");
 		$stmt->bindParam(':name', $_POST["email"]);
 		$stmt->bindParam(':pass', $_POST["password"]);
 		$stmt->execute();
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		if($result != false)
 		{
-			if($result['token'] == 'ADMIN')
-				header("Location: /vistaadmin.blade.php");
-			else
-				header("Location: /vistatecnico.blade.php?t=".$result['token']);
+                    if($result['token'] == 'ADMIN')
+                    {
+                        header("Location: /vistaadmin/" . $result["id_cuenta"]);
+                    }
+                    else 
+                    {    
+                        if ($result['token'] == 'ESPECIALISTA')
+                        {
+                            header("Location: /vistaespecialista.blade.php?t=". $result["token"]);
+                        }    
+                        else
+                        {
+                            
+                            header("Location: /vistausuario/" . $result['id_cuenta']);
+//                            header("Location: /vistausuario?id_cuenta=". $result["id_cuenta"]);
+                        }
+                    }
 		}
 	}
 ?>
@@ -34,15 +47,18 @@
 	</head>
 	<body>
 		<div class="container">
-                    <header style="">
-			<h2 class="text-center">Sistema de ayuda</h2>
-                        <a href="/vistaindex" style="text-decoration: none">
+                    <header class="" style="">
+			<h2 class="text-center pb-0 p-3">Sistema de ayuda</h2>
+                        
+                    </header>
+                    <a href="/vistaindex" style="text-decoration: none">
                             <div>
                                 <img src="iconos/volverIcono.png" style="height:2em">
                                 <small>Volver</small>
                             </div>
                         </a>
-                    </header>
+                    <br>
+                    <div>
 			<form class="p-3" action="vistalogin.blade.php" method="post">
 				<div class="mb-3">
 					<label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
@@ -62,7 +78,7 @@
 					<button type="submit" class="col-3 btn btn-primary me-2">Ingresar</button>
 				</div>
 			</form>
-
+                    </div>
 		</div>
 
 		<!-- Bootstrap Bundle with Popper -->

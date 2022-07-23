@@ -8,21 +8,20 @@
 	print_r($data);
  	if (!is_null($data))
 	{
-		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+		$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
 		$stmt = $dbh->prepare("
-		INSERT INTO tickets (titulo, id_fuente, id_estado, id_area, tipo_problema, fecha, desc_problema, resolucion_problema, id_invitado, fecha_exp)
-		SELECT :titulo, :fuente, :estado, :area, :tipo, CURDATE(), :problema, :resolucion, invitados.email, :fecha
-		FROM invitados WHERE invitados.email = :correo
+		INSERT INTO tickets (titulo, fuente, estado, departamento, tipo_problema, fecha, desc_problema, resolucion_problema, id_solicitante)
+		SELECT :titulo, :fuente, :estado, :departamento, :tipo, CURDATE(), :problema, :resolucion, usuarios.Id
+		FROM usuarios WHERE usuarios.Correo = :correo
 		");
 		$stmt->bindParam(':titulo', $data->titulo);
 		$stmt->bindParam(':fuente', $data->fuente);
 		$stmt->bindParam(':estado', $data->estado);
 		$stmt->bindParam(':tipo', $data->tema);
-		$stmt->bindParam(':area', $data->departamento);
+		$stmt->bindParam(':departamento', $data->departamento);
 		$stmt->bindParam(':problema', $data->problema);
 		$stmt->bindParam(':resolucion', $data->respuesta);
 		$stmt->bindParam(':correo', $data->correo);
-		$stmt->bindParam(':fecha', $data->fecha);
 		$stmt->execute();
 	} 
 ?>

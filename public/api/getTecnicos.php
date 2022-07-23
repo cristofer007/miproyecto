@@ -9,8 +9,8 @@
 	{
 		$tecnico = "%".$data->tecnico."%";
 
-		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
-		$stmt = $dbh->prepare("SELECT * FROM especialistas WHERE nombre LIKE ? OR email LIKE ?");
+		$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
+		$stmt = $dbh->prepare("SELECT * FROM tecnicos WHERE nombre LIKE ? OR email LIKE ?");
 		$stmt->bindParam(1, $tecnico);
 		$stmt->bindParam(2, $tecnico);
 		$stmt->execute();

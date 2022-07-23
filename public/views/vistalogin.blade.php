@@ -1,1 +1,0 @@
-../resources/views/vistalogin.blade.php

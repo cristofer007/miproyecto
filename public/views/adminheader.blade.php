@@ -1,1 +1,0 @@
-../resources/views/adminheader.blade.php

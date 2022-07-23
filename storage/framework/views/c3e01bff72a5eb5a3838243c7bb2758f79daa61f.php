@@ -8,53 +8,37 @@
 		<!-- Bootstrap CSS -->
 		<link href="/styles/style.css" rel="stylesheet">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-                
-		<title>>Sistema de ayuda</title>
+
+		<title>Tele-Ticket</title>
 	</head>
 	<body>
 		
 
 		<div class="container">
-                    <header>
-                        <div>
-                            <h2 class="text-center">Sistema de ayuda</h2>
-                        </div>
-			<div class="row justify-content-end p-0">
-                            <div class="col-auto h-100 m-0">
-                                    <a class="btn btn-primary" href="/vistaconsultar">Consultar solicitudes</a>
-                            </div>
-                            <div class="col-auto h-100 m-0">
-                                    <a class="btn btn-primary me-1" href="/vistalogin">Ingresar</a>
-                            </div>
+			<h2>Tele-Ticket</h2>
+			<div class="row justify-content-end">
+				<div class="col-auto">
+					<a class="btn btn-primary" href="/vistaconsultar">Consultar solicitudes anteriores</a>
+				</div>
+				<div class="col-auto">
+					<a class="btn btn-primary" href="/vistalogin">Ingresar</a>
+				</div>
 			</div>
-                    </header>   
-			<div class="container bg-light mb-2 p-2">
+
+			<div class="container bg-light mb-4 mt-2 p-2">
 				<?php
 					if (!empty($_GET))
 					{
 						if(isset($_GET['sent'])){
-                                                        echo '<br>';
-							echo '<p class="lead text-center fw-bold">Su solicitud ha sido enviada.</p>';
-							echo 
-                                                        '<p class="text-center"><a href="/"> '
-                                                            . '' .
-                                                            '<div class="row  d-flex flex-column justify-content-center align-items-center p-auto">' .
-                                                                '<div class="col-1 text-center">' .
-                                                                    '<img src="iconos/volverIcono.png" height="25em">' .
-                                                                '</div>' .
-                                                                
-                                                                '<div class="col-1 text-center">' .
-                                                                    'Volver' .
-                                                                '</div>'
-                                                        .   '</a>'
-                                                        . '</p>';
+							echo '<p class="lead text-center">Su solicitud ha sido enviada.</p>';
+							echo '<p class="text-center"><a href="/">Volver</a></p>';
 						}
 					}
 					else
 					{
 				?>
 					<form>
-						<p class="text-white p-1 text-center fw-bold" style="background-image: linear-gradient(50deg, #457fca, #5691c8);">Formulario de solicitud de atención al cliente</p>
+						<p class="text-white bg-primary p-1">Formulario de solicitud de atención al cliente</p>
 						<div class="container pb-3">
 							<div class="row justify-space-evenly">
 								<div class ="col">
@@ -63,8 +47,6 @@
 										<input type="text" class="form-control" id="nombreI">
 									</div>
 								</div>
-                                                        </div><!-- comment -->
-                                                        <div class="row">
 								<div class ="col">
 									<div class="mb-2">
 										<label for="apellidoI" class="form-label">Apellidos (*) <span class="text-black-50">(paterno y materno)</span></label>
@@ -73,7 +55,7 @@
 								</div>
 							</div>
 							<div class="mb-2">
-								<label for="correoI" class="form-label">Correo electrónico (*)</label>
+								<label for="correoI" class="form-label">Correo electronico (*)</label>
 								<input type="email" class="form-control" id="correoI">
 							</div>
 							<div class="mb-2">
@@ -86,16 +68,14 @@
 							</div>
 						</div>
 						<div id="errorO"></div>
-                                                <div class="text-end">
-                                                    <button type="button" class="btn btn-primary text-right" onClick="sendFun()">Enviar</button>
-                                                </div>
-                                        </form>
+						<button type="button" class="btn btn-primary" onClick="sendFun()">Abrir ticket</button>
+					</form>
 
 					<script>
 
 function err(message)
 {
-	document.getElementById("errorO").innerHTML += `<p class="text-danger fw-bold p-1 text-center">${message}</p>`;
+	document.getElementById("errorO").innerHTML += `<p class="text-danger">${message}</p>`;
 }
 
 function sendTicket(objTicket)
@@ -134,7 +114,7 @@ function sendFun()
 	}
 	else if (!document.getElementById("correoI").checkValidity())
 	{
-		err("El correo electrónico ingresado es inválido.");
+		err("El correo es invalido.");
 		valid = false;
 	}
 
@@ -158,11 +138,10 @@ function sendFun()
 		return;
 
 	var objUser = {
-                correo: correo,
-		nombres: nombre, 
-                apellidos: nombre2,
-		telefono: telefono
-	};
+		Nombre: nombre+' '+nombre2,
+		Correo: correo,
+		Telefono: telefono
+	}
 
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "/addUserAsync.php", true);
@@ -172,11 +151,11 @@ function sendFun()
 				var objTicket = {
 					nombre:       nombre,
 					correo:       correo,
-					titulo:       "Sin titulo",
+					titulo:       "Sín titulo",
 					estado:       9, //Entrante
 					fuente:       3, //Formulario
-					tema:         "Sin tema",
-					area:         -1, //Sin asignar
+					tema:         "Sín tema",
+					departamento: -1, //Sin asignar
 					respuesta:    "",
 					problema:     problema
 				};
@@ -200,9 +179,7 @@ function sendFun()
 		
 		<!-- Bootstrap Bundle with Popper -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-	
-                
-        </body>
+	</body>
 </html>
 
 <?php /**PATH E:\wamp64\proyecto-final\resources\views/vistaindex.blade.php ENDPATH**/ ?>

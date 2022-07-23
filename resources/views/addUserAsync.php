@@ -10,11 +10,10 @@
 		$invalido = true;
 		try {
 			$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
-			$stmt = $dbh->prepare("INSERT INTO invitados (email, nombres, apellidos, telefono) VALUES (:email, :nombres, :apellidos, :telefono)");
-			$stmt->bindParam(':email', $data->correo);
-			$stmt->bindParam(':nombres', $data->nombres);
-			$stmt->bindParam(':apellidos', $data->apellidos);
-			$stmt->bindParam(':telefono', $data->telefono);
+			$stmt = $dbh->prepare("INSERT INTO usuarios (Nombre, Correo, Telefono) VALUES (:nombre, :correo, :telefono) ");
+			$stmt->bindParam(':nombre', $data->Nombre);
+			$stmt->bindParam(':correo', $data->Correo);
+			$stmt->bindParam(':telefono', $data->Telefono);
 			$stmt->execute();
 			echo '0';
 		}

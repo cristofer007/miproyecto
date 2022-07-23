@@ -21,12 +21,12 @@
 	else
 		exit;
 	
-	$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+	$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
 	$stmt = $dbh->prepare(
- "SELECT *, usuarios.nombre AS cliente, especialistas.nombre AS especialista, especialistas.email AS correo_especialista, estados_tickets.estado AS estadodesc from tickets
+ "SELECT *, usuarios.nombre AS cliente, tecnicos.nombre AS tecnico, tecnicos.email AS correo_tecnico, estados_tickets.estado AS estadodesc from tickets
 	inner join usuarios on id_solicitante = usuarios.Id 
-	inner join estados_tickets on estados_tickets.id_estado = tickets.id_estado 
-	LEFT JOIN especialistas ON especialistas.id_especialista = tickets.id_especialista WHERE codigo = ?");
+	inner join estados_tickets on estados_tickets.id_estado = tickets.estado 
+	LEFT JOIN tecnicos ON tecnicos.id_tecnico = tickets.id_tecnico WHERE codigo = ?");
 	$stmt->bindParam(1, $codigo);
 	$stmt->execute();
 	$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -52,11 +52,12 @@
 		<link href="/styles/style.css" rel="stylesheet">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-		<title>Modificar ticket</title>
+		<title>Editar ticket</title>
 	</head>
 	<body>
 		<div class="container">
-			<h2>Tele-Ticket</h2>
+                       
+			<h2 class="text-center py-3">Sistema de ayuda</h2>
 			<div class="row justify-content-end">
 				<div class="col-auto">
 					<?php echo '<a class="btn btn-primary" href="'.$backlink.'">Regresar</a>' ?>
@@ -67,15 +68,15 @@
 			</div>
 			<div class="container bg-light mb-4 p-2">
 				<form>
-					<p class="text-white bg-primary p-1">Encargado</p>
+					<p class="text-white bg-primary p-1 fw-bold">Encargado</p>
 					<div class="container pb-2">
 						<div class="mb-1">
 							<div class="row justify-space-evenly">
 								<div class="col">
 									<label class="form-label">Nombre: <p id="nombreI">
 										<?php
-											if(!is_null($result['especialista']))
-												echo $result['especialista'];
+											if(!is_null($result['tecnico']))
+												echo $result['tecnico'];
 											else
 												echo 'Sin asignar';
 										?>
@@ -91,10 +92,10 @@
 							</div>
 						</div>
 						<div class="mb-1">
-							<label class="form-label">Correo: <p id="correoI"><?php echo $result['correo_especialista'] ?></p></label>
+							<label class="form-label">Correo: <p id="correoI"><?php echo $result['correo_tecnico'] ?></p></label>
 						</div>
 					</div>
-					<p class="text-white bg-primary p-1">Cliente</p>
+					<p class="text-white bg-primary p-1 fw-bold">Cliente</p>
 					<div class="container pb-2">
 						<div class="mb-1">
 							<label class="form-label">Nombre: <p>
@@ -107,7 +108,7 @@
 							<label class="form-label">Correo: <p><?php echo $result['Correo'] ?></p></label>
 						</div>
 					</div>
-					<p class="text-white bg-primary p-1">Ticket</p>
+					<p class="text-white bg-primary p-1 fw-bold">Ticket</p>
 					<div class="container pb-3">
 						<div class="row justify-space-evenly">
 							<div class ="col">
@@ -123,8 +124,8 @@
 									<label for="estadoI" class="form-label">Estado</label>
 									<select class="form-select" id="estadoI" aria-label="Select">
 										<?php
-										$opciones = array("Nuevo", "Asignado", "Resuelto (esperando aceptación)", "Cerrado",);
-										$vals = array(0,1,3,2,9);
+										$opciones = array("Nuevo", "Libre", "Asignado", "Resuelto", "Cerrado");
+										$vals = array(9,0,1,3,2);
 										$max = 5;
 										if($mode==1)
 											$max = 3;
@@ -145,7 +146,7 @@
 							<label for="fuenteI" class="form-label">Fuente</label>
 							<select class="form-select" id="fuenteI" aria-label="Select">
 								<?php
-								$opciones = array("Telefono", "Correo", "Chat", "Formulario");
+								$opciones = array("Telefono", "E-mail", "Chat", "Formulario");
 								$vals = array(0,1,2,3);
 								for($i = 0; $i < count($opciones); $i++)
 								{
@@ -167,8 +168,8 @@
 							<label for="departamentoI" class="form-label">Departamento</label>
 							<select class="form-select" id="departamentoI" aria-label="Select">
 								<?php
-								$opciones = array("Sin asignar", "Soporte", "Redes", "Servidores");
-								$vals = array(-1,0,1,2);
+								$opciones = array("Sin asignar", "Psicopedagogía", "Soporte TI", "Biblioteca", "Docencia");
+								$vals = array(-1,0,1,2,3);
 								for($i = 0; $i < count($opciones); $i++)
 								{
 									echo '<option value="'.$vals[$i].'" ';
@@ -189,15 +190,47 @@
 						</div>
 					</div>
 					<p class="text-danger" id="errorO"></p>
-					<button type="button" class="btn btn-primary" onClick="sendFun()">Guardar cambios</button>
+                                        <div class="text-end">
+                                            <button type="button" class="btn btn-primary me-3" onClick="sendFun()">Guardar cambios</button>
+                                        </div>
 				</form>
 		</div>
+                         <footer class="container px-0 p-0 w-100" style="max-width:100%; min-width:100%; position: fixed; bottom: 0%; left: 0%; height:10%; background-image: linear-gradient(40deg, #1d976c, #93f9b9); color:white; font-weight: bold">
+                    <div class="row w-100 h-100 px-0 mx-0 py-0 " >
+                            
+                            <div class="col border  text-center p-0 m-0 d-sm-flex flex-sm-column align-items-sm-center" id="pestanaForo">
+                                <a href="/admin.php" style="color:white; text-decoration:none; text-shadow: 2px 2px 4px #000000;">   
+                                <div class="p-0 m-0 texto-pestana">
+                                        Solicitudes
+                                    </div>
+                                    <div class="p-0 m-0 text-center">
+                                            <img src="iconos/solicitudesIcono.png" width="17%">
+                                    </div>
+                               </a>
+                            </div>
+
+                      
+
+                            <div class="col border  text-center px-0" id="pestanaChat" onclick="irAChat()">
+                                <a href="/nuevoticket.php" style="color:white; text-decoration:none; text-shadow: 2px 2px 4px #000000;">
+                                    <div class="p-0 m-0 texto-pestana">
+                                        Nuevo Ticket
+                                    </div>
+                                    <div class="p-0 m-0 text-center">
+                                            <img src="iconos/nuevoTicketIcono.png" width="50em">
+                                    </div>
+                                </a>
+                            </div>
+
+                    </div>
+                </footer>
+
 
 		<div class="modal fade" id="asignarModal" tabindex="-1" aria-labelledby="asignarModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="asignarModalLabel">Asignar técnico</h5>
+						<h5 class="modal-title" id="asignarModalLabel">Asignar encargado</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">

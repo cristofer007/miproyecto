@@ -1,1 +1,0 @@
-../resources/views/welcome.blade.php

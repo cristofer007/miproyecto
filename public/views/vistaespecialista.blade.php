@@ -1,1 +1,0 @@
-../resources/views/vistaespecialista.blade.php

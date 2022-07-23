@@ -1,1 +1,0 @@
-../resources/views/vistaforo.blade.php

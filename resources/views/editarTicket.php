@@ -25,7 +25,7 @@
 	$stmt = $dbh->prepare(
  "SELECT *, usuarios.nombre AS cliente, especialistas.nombre AS especialista, especialistas.email AS correo_especialista, estados_tickets.estado AS estadodesc from tickets
 	inner join usuarios on id_solicitante = usuarios.Id 
-	inner join estados_tickets on estados_tickets.id_estado = tickets.id_estado 
+	inner join estados_tickets on estados_tickets.id_estado = tickets.estado 
 	LEFT JOIN especialistas ON especialistas.id_especialista = tickets.id_especialista WHERE codigo = ?");
 	$stmt->bindParam(1, $codigo);
 	$stmt->execute();
@@ -52,7 +52,7 @@
 		<link href="/styles/style.css" rel="stylesheet">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-		<title>Modificar ticket</title>
+		<title>Editar ticket</title>
 	</head>
 	<body>
 		<div class="container">
@@ -123,7 +123,7 @@
 									<label for="estadoI" class="form-label">Estado</label>
 									<select class="form-select" id="estadoI" aria-label="Select">
 										<?php
-										$opciones = array("Nuevo", "Asignado", "Resuelto (esperando aceptación)", "Cerrado",);
+										$opciones = array("Abierto", "Asignado / Cerrado", "Resuelto (esperando aceptación)", "Resuelto", "Entrante");
 										$vals = array(0,1,3,2,9);
 										$max = 5;
 										if($mode==1)

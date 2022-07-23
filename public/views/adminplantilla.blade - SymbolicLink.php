@@ -1,1 +1,0 @@
-../resources/views/adminplantilla.blade.php

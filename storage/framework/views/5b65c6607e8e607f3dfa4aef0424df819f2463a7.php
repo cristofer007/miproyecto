@@ -1,12 +1,11 @@
 <?php
 
-$tipoTicket = 9;
+$tipoTicket = 0;
 $keywords = null;
 $departamento = null;
 $start = null; $end = null;
 $cliente = null;
 $tecnico = null;
-
 
 $extra = "";
 
@@ -25,7 +24,7 @@ if (!empty($_GET))
 
 	if(isset($_GET['departamento'])){
 		$departamento = $_GET['departamento'];
-		$extra .= " AND (tickets.id_area = ?)";
+		$extra .= " AND (tickets.departamento = ?)";
 	}
 
 	if(isset($_GET['start']) && isset($_GET['end']))
@@ -35,10 +34,9 @@ if (!empty($_GET))
 		$extra .= " AND (fecha BETWEEN ? AND ?)";
 	}
 
-	if ( isset($_GET['cliente']))
-        {         
-            $extra .= " AND (  (usuarios.Nombre LIKE ? OR usuarios.email LIKE ?) OR "
-                       . "(invitados.nombres LIKE ? OR invitados.email LIKE ? )  )";        
+	if(isset($_GET['cliente'])){
+		$cliente = $_GET['cliente'];
+		$extra .= " AND (usuarios.Nombre LIKE ? OR usuarios.Correo LIKE ?)";
 	}
 
 	if(isset($_GET['tecnico'])){
@@ -49,115 +47,97 @@ if (!empty($_GET))
 ?>	
 
 <!doctype html>
-<html lang="en" style="max-height:100%; min-height:100%">
-    <head>
-            <!-- Required meta tags -->
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <!-- Bootstrap CSS -->
-            <link href="/styles/style.css" rel="stylesheet">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+		<!-- Bootstrap CSS -->
+		<link href="/styles/style.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-            <title>Panel de administración</title>
-            <style>
-                .apuntable:hover
-                {
-                    cursor: pointer;
-                }
-                
-                #botonNuevoTicket
-                {
-                   
-                }
-            </style>
-    </head>
-<!--***************************************************************************************************************************
-*******************************  BODY  **************************************************************************************************************
-*******************************************************************************************************************************-->
+		<title>Panel de administración</title>
+	</head>
+	<body>
+		<div class="container">
+			<h2 class="text-center">Sistema de ayuda</h2>
+			<div class="row justify-content-end">
+				<div class="col-auto">
+					<a class="" href="/vistaindex.blade.php"><img src="iconos/salirIcono.png" height="25em">Salir</a>
+				</div>
+			</div>
+<!--			<ul class="nav mb-4">
+				//<li class="nav-item">
+				//	<a class="nav-link active" href="#">Tickets</a>
+				//</li>
+				//<li class="nav-item">
+				//	<a class="nav-link" href="#">Usuarios</a>
+				//</li>
+				
+			</ul>-->
 
-    <body class="border border-secondary bg-light p-0">
-        <header class="container text-white p-0 w-100" style="position:fixed; top: 0% ;background-image:linear-gradient(50deg, #f7971e, #ffd200);">
-            <div class="row h-100 px-0">
-                <h2 style="" class="text-center py-2 px-0">Sistema de ayuda</h2>
-                <div style="position:absolute; right:0%;" class="col-3 apuntable p-0 align-middle text-end mb-0 me-2 mt-3">
-                     <a class="w-100 align-self-center " href="/vistaindex" style="text-decoration:none; color:white">
-                         <img src="/iconos/salirIcono.png" style="height:1.75em">Salir
-                     </a>
-                 </div>
-             </div>
-            
-        </header>
-<!---------------------------------------------------------------------------------------------------------------------------------->
-            
-                <div class="container px-0  mx-0 my-0 w-100" style=" position:absolute; top:7%; right:0%">
-                    <div class="row m-0 mb-3  px-0" >
-			<div class="container bg-light my-auto px-0  border  w-100" >
-				<div class="row my-auto border py-2 w-100 mx-0 px-0">
-                                    <?php
+			<div class="container bg-light mb-4 p-2">
+				<div class="row mb-4">
+					<?php
 					$secciones = array("Entrantes", "Nuevos", "Asignados", "Resueltos");
 					$vals = array(9, 0, 1, 2);
 					for($i = 0; $i < 4; $i++)
 					{
-                                            echo '<div class="col text-center my-auto align-self-center" >';
-                                            if($vals[$i] == $tipoTicket){
-                                                echo $secciones[$i];
-                                            }
-                                            else{
-                                                echo '<a href="/vistaadmin.blade.php?tipo='.$vals[$i].'">'. $secciones[$i] .'</a>';
-                                            }
-                                            echo '</div>';
+						echo '<div class="col text-center" >';
+						if($vals[$i] == $tipoTicket)
+							echo $secciones[$i];
+						else
+							echo '<a href="/vistaadmin.blade.php?tipo='.$vals[$i].'">'. $secciones[$i] .'</a>';
+						echo '</div>';
 					}
-                                    ?>
-					
+					?>
+					<div class="col-2">
+						<a href="/vistanuevoticket.blade.php">Nuevo ticket</a>
+					</div>
 				</div>
-                                
-				<div class="input-group h-75 p-0 g-0 border w-100 m-0">
-                                    <div class="row w-100 g-0 my-auto  p-0 border m-0">
-                                        <div class="col col-sm-10 p-0 ms-0 h-100 my-auto border">
-                                            <div class="form-outline row w-100 my-auto d-flex flex-row p-0 h-100 g-0">
-                                                <div class="col-8 col-sm-10 p-0 mx-auto">
-                                                    
-                                                    <input type="search" id="directSearch" class="col-6 col-sm-10 w-100 form-control p-0  h-100" onChange="search1()"/>
+			
+				<div class="input-group  h-100 p-0 g-0">
+                                    <div class="row w-100 g-0 m-auto  p-0 h-100">
+                                        <div class="col-4 p-0 ms-0 h-100">
+                                            <div class="form-outline row w-100 d-flex flex-row p-0 h-100 g-0">
+                                                <div class="col-8 p-0 mx-auto">
+                                                    <input type="search" id="directSearch" class="col-6 w-100 form-control p-0  h-100" onChange="search1()"/>
                                                 </div>
-                                                <div class="col-4 col-sm-2 my-auto mb-0">    
-                                                    <button type="button" class="btn btn-primary h-100 w-100 col-sm-4 col-2  m-auto" onClick="search1()">
+                                                <div class="col-4">    
+                                                    <button type="button" class="btn btn-primary h-100 w-100 col-2 m-auto" onClick="search1()">
                                                         Buscar
                                                     </button>
                                                 </div>
                                             </div>
                                             
                                         </div>
-                                    </div>
-                                    <div class="row my-auto p-0 border w-100" >
-                                        <div class="row d-flex flex-row m-0 p-0 h-100 g-0 w-100 justify-content-center border ">
-                                        <?php 
-
-                                           echo '<a class="col-5 text-center my-auto py-auto h-100" href="/vistaadmin.blade.php?tipo='.$tipoTicket.'" style= "font-size: 0.85em">'
-                                                . '<img src="iconos/limpiarBusquedaIcono.png" height="25em">'
-
-                                                . ' Limpiar busqueda</a>'
-
-                                        ?>
-
-                                            <div class="col-1"></div>
-                                            <a class=" col-5 cursorClickIcon text-center my-auto py-auto p-0 h-100" data-bs-toggle="modal" data-bs-target="#searchModal" style="font-size:0.85em"><img src="iconos/busquedaAvanzadaIcono.png" style="height:2em"> <span></span>Búsqueda avanzada</a>
+                                        <div class="col-1">
                                          </div>
-                                     </div>
-<!--                                        <div class="col-1">
-                                         </div>-->
+                                        <div class="col-6 h-100 mh-100 my-auto p-0" style="min-height:100%">
+                                            <div class="row d-flex flex-row m-0 p-0 h-100 g-0 justify-content-center">
+                                            <?php 
+
+                                               echo '<a class="col-5 text-center text-white my-auto py-auto h-100" href="/vistaadmin.blade.php?tipo='.$tipoTicket.'" style="background-image:linear-gradient(50deg, #7474bf, #348ac7); font-size: 0.85em">'
+                                                       . '<img src="iconos/limpiarBusquedaIcono.png" height="25em">'
+                                                     
+                                                       . ' Limpiar busqueda</a>'
+
+                                               ?>
+                                        
+                                                <div class="col-1"></div>
+                                                <a class=" col-5 cursorClickIcon text-center text-white my-auto py-auto p-0 h-100" data-bs-toggle="modal" data-bs-target="#searchModal" style="background-image:linear-gradient(50deg, #7474bf, #348ac7); font-size: 0.85em"><img src="iconos/busquedaAvanzadaIcono.png" height="25em"> <span></span>Búsqueda avanzada</a>
+                                             </div>
+                                         </div>
+                                        <div class="col-1">
+                                         </div>
                                     </div>
                                 </div>
-                        
-                                <div class="overflow-scroll px-0 m-0 w-100"  style="height:30%; max-height:30%; overflow:scroll;">
 				<?php
-					$dbh = new PDO('mysql:host=localhost; dbname=teleticket', "root", "");
-					$stmt = $dbh->prepare("SELECT *, invitados.nombres AS cliente, especialistas.nombre AS tecnico, especialistas.email AS correo_tecnico 
-                                                               FROM     tickets
-                                                                        inner join invitados on id_invitado = invitados.email 
-                                                                        LEFT join usuarios on tickets.id_solicitante = usuarios.Id
-                                                                        LEFT JOIN especialistas ON especialistas.id_especialista = tickets.id_especialista 
-                                                               WHERE    id_estado = ?" . $extra);
+					$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+					$stmt = $dbh->prepare("SELECT *, usuarios.nombre AS cliente, especialistas.nombre AS tecnico, especialistas.email AS correo_tecnico from tickets
+					inner join usuarios on id_solicitante = usuarios.Id 
+					LEFT JOIN especialistas ON especialistas.id_especialista = tickets.id_especialista WHERE estado = ?".$extra);
 					$stmt->bindParam(1, $tipoTicket);
 					$paramI = 2;
 					if(!is_null($keywords))
@@ -196,118 +176,97 @@ if (!empty($_GET))
 					$stmt->execute();
 					if($stmt->rowCount() > 0)
 					{
-                                ?>
-                                    
-                                    
-                                            <div style="width:100%; height:30em; min-height: 30em; max-height:30em; overflow-y:scroll" class="h-50 border p-0 mx-0" >
-                                                <table class="table table-striped mt-0 border border-primary " >
-							<thead class="bg-light" style="position:sticky">
+						?>
+						<table class="table table-striped mt-4">
+							<thead>
 								<tr>
-									<th class="border border-dark text-center" scope="col"></th>
-									<th class="border border-dark text-center" scope="col">Título</th>
-									<th class="border border-dark text-center" scope="col">Fecha</th>
-									<th class="border border-dark text-center" scope="col">Solicitante</th>
-									<th class="border border-dark text-center" scope="col">Encargado</th>
-									<th class="border border-dark text-center" scope="col">Detalles</th>
+									<th class="border border-danger text-center" scope="col"></th>
+									<th class="border border-danger text-center" scope="col">Título</th>
+									<th class="border border-danger text-center" scope="col">Fecha</th>
+									<th class="border border-danger text-center" scope="col">Solicitante</th>
+									<th class="border border-danger text-center" scope="col">Encargado</th>
+									<th class="border border-danger text-center" scope="col">Detalles</th>
 								</tr>
 							</thead>
 							<tbody id="resultsTable">
-                                                            
-                                                            
-                                    <?php
-                                                                    foreach($stmt as $row)
-                                                                    {
-                                                                            echo '<tr>';
-                                                                            echo '<td class="text-center align-middle"><input type="checkbox" data-codigo="'.$row['codigo'].'" onchange="chkCount(this)"></td>';
-                                                                            echo '<td class="text-center my-auto align-middle">'. $row['titulo'] .'</td>';
-                                                                            echo '<td class="text-center align-middle">'. $row['fecha'] .'</td>';
-                                                                            echo '<td class="text-center align-middle">'. $row['cliente'] .'</td>';
-                                                                            if(!is_null($row['tecnico']))
-                                                                                    echo '<td class="text-center my-auto align-middle">'. $row['tecnico'] .'</td>';
-                                                                            else
-                                                                                    echo '<td class="text-center my-auto align-middle py-0"><a class="text-decoration-none cursorClickIcon " onClick="asignar('.$row['codigo'].')"> <img src="iconos/asignarIcono.png" class="pb-0 mb-0 align-middle" height="31em"> </a></td>';
-                                                                            echo '<td class="text-center my-0 py-0 align-middle"> <a class="text-decoration-none cursorClickIcon" onClick="detalles('.$row['codigo'].')"> <img src="iconos/verDetallesIcono.png" height="28em"></a></td>';
-                                                                            echo '</tr>';
-                                                                    }
-                                    ?>
-                                                            
-                                                            
+								<?php
+								foreach($stmt as $row)
+								{
+									echo '<tr>';
+									echo '<td class="text-center"><input type="checkbox" data-codigo="'.$row['codigo'].'" onchange="chkCount(this)"></td>';
+									echo '<td class="text-center">'. $row['titulo'] .'</td>';
+									echo '<td class="text-center">'. $row['fecha'] .'</td>';
+									echo '<td class="text-center">'. $row['cliente'] .'</td>';
+									if(!is_null($row['tecnico']))
+										echo '<td class="text-center">'. $row['tecnico'] .'</td>';
+									else
+										echo '<td class="text-center"><a class="text-decoration-none cursorClickIcon " onClick="asignar('.$row['codigo'].')"> <img src="iconos/asignarIcono.png" height="25em"> </a></td>';
+									echo '<td class="text-center"> <a class="text-decoration-none cursorClickIcon" onClick="detalles('.$row['codigo'].')"> <img src="iconos/verDetallesIcono.png" height="22em"></a></td>';
+									echo '</tr>';
+								}
+								?>
 							</tbody>
 						</table>
-                                            </div>
-                                                <div id="eliminarBoton" class="container ms-0 h-100 border border-danger p-0" style="position:relative;width:10%; height:3em; " onClick="eliminarDialog()">
-                                                    <div class="row border h-100 border-primary mx-0 text-center px-0" style="width:100%">
-                                                        <img class="w-100 m-0" src="iconos/eliminarIcono.png"  width="100%" style="height:2em;" id="eliminarBtn">
-                                                    </div>
-                                                    <div class="h-25 row fw-bold text-center px-0 mx-auto" style="font-size:0.75em">
+                                                <div id="eliminarBoton" class="container ms-0" style="width:5%" onClick="eliminarDialog()">
+                                                    <div class="row">
+                                                        <img src="iconos/eliminarIcono.png" height="40em" id="eliminarBtn" disabled ">
+                                                    </div><!-- comment -->
+                                                    <div class="row fw-bold text-center">
                                                         Eliminar
                                                     </div>
                                                 </div> 
-                                            
-                                <?php
+						<?php
 					}
 					else
 					{
-                                            echo '<p class="fs-4 mt-4 text-center">No hay resultados</p>';
+						echo '<p class="fs-4 mt-4">No hay resultados</p>';
 					}
 				?>
-                                </div>
-                        </div>
-                <div id="botonNuevoTicket" class="row justify-content-center me-1" style="border: 3px solid blue ;position:fixed; height: 11%; width: 18%; border-radius:50%; right:2.5%; bottom:11%; background-image: radial-gradient(#005c97, #363795);">
-                    <a href="/vistanuevoticket" class="text-center h-100 w-100 p-0" style="position:relative;">
-                        
-                        <img class="align-middle" src="iconos/nuevoTicketIcono.png" style="position:absolute; left:7%; top: 7% ;height: 80%">
-                    </a>
-                </div>    
-                    
-<!--***************************************************************************************************************************
-*******************************  FOOTER **************************************************************************************************************
-*******************************************************************************************************************************-->
-                   
-        <footer class="container px-0 p-0 border border-danger" style="position: fixed; bottom: 0%; left: 0%; height:10%; background-image: linear-gradient(40deg, #1d976c, #93f9b9); color:white; font-weight: bold">
-            <div class="row w-100 h-100 px-0 mx-0 py-0 border border-danger" >
+			</div>
+		</div>
+            
+            
+                <footer class="container px-0" style="position: fixed; bottom: 0%; height:10%; background-image: linear-gradient(40deg, #1d976c, #93f9b9); color:white; font-weight: bold">
+                    <div class="row w-100 h-100 border border-danger px-0 mx-0 " >
 
-                    <div class="col border border-primary text-center p-0 m-0 d-sm-flex flex-sm-column align-items-sm-center" id="pestanaForo">
-                            <div class="p-0 m-0 texto-pestana">
-                                Solicitudes
+                            <div class="col border border-primary text-center p-0 m-0 d-sm-flex flex-sm-column align-items-sm-center" id="pestanaForo">
+                                    <div class="p-0 m-0">
+                                        Solicitudes
+                                    </div>
+                                    <div class="p-0 m-0 text-center">
+                                            <img src="iconos/solicitudesIcono.png" width="30.5%">
+                                    </div>
                             </div>
-                            <div class="p-0 m-0 text-center">
-                                    <img src="iconos/solicitudesIcono.png" width="30.5%">
+
+                            <div class="col border border-primary text-center px-0" id="pestanaRecursos" onclick="irARecursos()">
+
+                                    <div class="p-0 m-0">
+                                        Usuarios
+                                    </div>
+                                    <div class="p-0 m-0">
+                                            <img src="iconos/usuariosIcono.png"/ width="40%">
+                                    </div>
+                                <
                             </div>
+
+                            <div class="col border border-primary text-center px-0" id="pestanaChat" onclick="irAChat()">
+                                    <div class="p-0 m-0">
+                                        Canales
+                                    </div>
+                                    <div class="p-0 m-0 text-center">
+                                            <img src="iconos/canalesIcono.png"/ width="40.5%">
+                                    </div>
+                            </div>
+
                     </div>
+            </footer>
+            
 
-                    <div class="col border border-danger text-center px-0" id="pestanaRecursos" onclick="irARecursos()">
-                        <a href="/vistagestionusuarios">
-                            <div class="p-0 m-0 texto-pestana">
-                                Usuarios
-                            </div>
-                            <div class="p-0 m-0">
-                                    <img src="iconos/usuariosIcono.png" width="40%">
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col border border-primary text-center px-0" id="pestanaChat" onclick="irAChat()">
-                            <div class="p-0 m-0 texto-pestana">
-                                Canales
-                            </div>
-                            <div class="p-0 m-0 text-center">
-                                    <img src="iconos/canalesIcono.png" width="40.5%">
-                            </div>
-                    </div>
-
-            </div>
-        </footer>
-                    
-<!--***************************************************************************************************************************
-*******************************  MODALS **************************************************************************************************************
-*******************************************************************************************************************************-->
-
-                <div class="modal fade" id="exampleModal" style="top:5%" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
-					<div class="modal-header" style="background-image: linear-gradient(50deg, #457fca, #5691c8)">
-						<h5 class="modal-title text-white fw-bold" id="exampleModalLabel">Detalles del ticket</h5>
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Detalles del ticket</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -337,7 +296,7 @@ if (!empty($_GET))
 							<div class="col" id="oTema"></div>
 						</div>
 						<div class="row align-items-center mb-1">
-							<div class="col-3 fw-bold">Área:</div>
+							<div class="col-3 fw-bold">Departamento:</div>
 							<div class="col" id="oDepartamento"> aaaa</div>
 						</div>
 						<div class="row align-items-center mb-1">
@@ -350,7 +309,7 @@ if (!empty($_GET))
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick="editar()">Modificar</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick="editar()">Editar</button>
 						<?php 
 							if($tipoTicket == 3)
 								echo '<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick="aceptarResolucion()">Aceptar resolución</button>'
@@ -360,7 +319,7 @@ if (!empty($_GET))
 			</div>
 		</div>
 
-		<div class="modal fade" style="top:20%; width:90%; left:5%" id="warnModal" tabindex="-1" aria-labelledby="warnModalLabel" aria-hidden="true">
+		<div class="modal fade" id="warnModal" tabindex="-1" aria-labelledby="warnModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header text-white" style="background-image: linear-gradient(50deg, #e43a15, #e65245)">
@@ -378,10 +337,10 @@ if (!empty($_GET))
 			</div>
 		</div>
 
-		<div class="modal fade" style="top:3%; width:95%; left:2.5%" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+		<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header" style="background-image:linear-gradient(50deg, #457fca, #5691c8); color:white">
+					<div class="modal-header">
 						<h5 class="modal-title" id="searchModalLabel">Búsqueda avanzada</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
@@ -393,12 +352,11 @@ if (!empty($_GET))
 						<div class="mb-2">
 							<label for="smEstado" class="form-label">Buscar en estado del ticket</label>
 							<select class="form-select form-select-sm" id="smEstado" aria-label="Select">
-								<option value="9">Entrante</option>
-                                                                <option value="0">Nuevo</option>
-								<option value="1">Asignado</option>
+								<option value="0">Abierto</option>
+								<option value="1">Asignado / Cerrado</option>
 								<option value="2">Resuelto</option>
-								
-								
+								<option value="3">Resuelto (Esperando aceptación)</option>
+								<option value="9">Entrante</option>
 							</select>
 						</div>
 						<div class="mb-2">
@@ -436,10 +394,10 @@ if (!empty($_GET))
 			</div>
 		</div>
 
-		<div class="modal fade" id="asignarModal" tabindex="-1" aria-labelledby="asignarModalLabel" aria-hidden="true" style="width:95%; top:10%; left:2.5%">
+		<div class="modal fade" id="asignarModal" tabindex="-1" aria-labelledby="asignarModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header text-white" style="background-image: linear-gradient(50deg, #457fca, #5691c8);">
+					<div class="modal-header">
 						<h5 class="modal-title" id="asignarModalLabel">Asignar técnico</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
@@ -455,11 +413,7 @@ if (!empty($_GET))
 					</div>
 				</div>
 			</div>
-		</div>	
-
-<!--***************************************************************************************************************************
-*******************************  SCRIPTS **************************************************************************************************************
-*******************************************************************************************************************************-->
+		</div>
 
 		<script>
 			var editCode = -1;
@@ -467,7 +421,7 @@ if (!empty($_GET))
 			var codigos = [];
 			var codigoTecnico = null;
 			var checkboxCount = 0;
-			var checkList = document.getElementById("resultsTable");
+			var checkList = document.getElementById("resultsTable")
 			if(checkList !== null)
 			{
 				checkList=checkList.getElementsByTagName("input");
@@ -520,28 +474,14 @@ if (!empty($_GET))
 							let tecnicos = document.getElementById("listaTecnicos");
 							tecnicos.textContent = '';
 							let response = JSON.parse(xhr.response);
-
 							for(var i = 0; i < response.length; i++)
 							{
 								let node = document.createElement("LI");
-								node.setAttribute("class", "list-group-item list-group-item-action p-0"); 
+								node.setAttribute("class", "list-group-item list-group-item-action"); 
 								node.setAttribute("onClick", "asignarTecnico("+codigoTecnico+","+response[i].id_tecnico+")");
 								node.setAttribute("data-bs-dismiss", "modal");
-								let nombreEspecialista = document.createTextNode(response[i].nombre + ' ' + response[i].apellido_p);
-                                                                celdaNombre = document.createElement("div");
-                                                                celdaNombre.setAttribute("class", "col text-center");
-                                                                celdaNombre.appendChild(nombreEspecialista);
-                                                                
-                                                                let cargoEspecialista = document.createTextNode(response[i].cargo);
-                                                                celdaCargo = document.createElement("div");
-                                                                celdaCargo.setAttribute("class", "col text-center");
-                                                                celdaCargo.appendChild(cargoEspecialista);
-                                                                
-                                                                let contenedorInfo = document.createElement("div");
-                                                                contenedorInfo.setAttribute("class", "row m-0 p-0 text-center justify-content-center");
-                                                                contenedorInfo.appendChild(celdaNombre);
-                                                                contenedorInfo.appendChild(celdaCargo);
-								node.appendChild(contenedorInfo);
+								let textnode = document.createTextNode(response[i].nombre);
+								node.appendChild(textnode);
 								tecnicos.appendChild(node); 
 							}
 						} else {
@@ -745,12 +685,10 @@ if (!empty($_GET))
 				xhr.send(JSON.stringify(obj));
 			}
 		</script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-
-<!--		 Bootstrap Bundle with Popper 
+		<!-- Bootstrap Bundle with Popper -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 	
--->        </body>
+        </body>
         <style>
             #eliminarBoton 
             {

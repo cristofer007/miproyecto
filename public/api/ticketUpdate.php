@@ -8,14 +8,14 @@
 	if(!empty($_GET))
 	{
 		if(isset($_GET['type'])){
+			echo 'ISSERT';
 			if($_GET['type'] == 1)
 			{
 				echo 'Type1';
-				print_r($data);
-				$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+				$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
 				$stmt = $dbh->prepare(
 				"UPDATE teleticket.tickets A
-				SET A.id_estado = 3, A.resolucion_problema = :resolucion
+				SET A.estado = 3, A.resolucion_problema = :resolucion
 				WHERE codigo = :codigo
 				");
 				$stmt->bindParam(':resolucion', $data->resolucion);
@@ -29,7 +29,7 @@
 				$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
 				$stmt = $dbh->prepare(
 				"UPDATE teleticket.tickets A
-				SET A.id_estado = 2
+				SET A.estado = 2
 				WHERE codigo = :codigo
 				");
 				$stmt->bindParam(':codigo', $data->codigo);
@@ -45,9 +45,9 @@
 		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
 		$stmt = $dbh->prepare(
 		"UPDATE teleticket.tickets A
-		SET A.titulo = :titulo, A.id_fuente = :fuente, A.id_estado = :estado, A.id_area = :departamento,
+		SET A.titulo = :titulo, A.fuente = :fuente, A.estado = :estado, A.departamento = :departamento,
 			A.tipo_problema = :tipo, A.desc_problema = :problema, A.resolucion_problema = :resolucion,
-			A.id_especialista = (SELECT B.id_tecnico FROM teleticket.especialistas B
+			A.id_tecnico = (SELECT B.id_tecnico FROM teleticket.tecnicos B
 				WHERE B.email = :correo
 			)
 		WHERE codigo = :codigo

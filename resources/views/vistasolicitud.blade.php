@@ -1,7 +1,7 @@
 
 
 <html class="container" style="height:100%; width:100%; border: solid blue; overflow-x:hidden; overflow-y:hidden; margin:0px; padding:0px">
-<!--*****-->
+
 <head style="margin:0px; ">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">

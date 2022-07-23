@@ -18,7 +18,7 @@
 		}
 	}
 ?>
-<!--*****--><!--*****-->
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -34,22 +34,14 @@
 	</head>
 	<body>
 		<div class="container">
-                    <header style="">
 			<h2 class="text-center">Sistema de ayuda</h2>
-                        <a href="/vistaindex" style="text-decoration: none">
-                            <div>
-                                <img src="iconos/volverIcono.png" style="height:2em">
-                                <small>Volver</small>
-                            </div>
-                        </a>
-                    </header>
 			<form class="p-3" action="vistalogin.blade.php" method="post">
 				<div class="mb-3">
 					<label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
 					<input type="email" name="email" class="form-control" id="exampleInputEmail1">
 				</div>
 				<div class="mb-3">
-					<label for="exampleInputPassword1" class="form-label">Contraseña</label>
+					<label for="exampleInputPassword1" class="form-label">Password</label>
 					<input type="password" name="password" class="form-control" id="exampleInputPassword1">
 				</div>
 				<div class="mb-3">
@@ -58,8 +50,8 @@
 							echo "Correo o contraseña incorrecto";
 					?></p>
 				</div>
-				<div class="row p-0 justify-content-end">
-					<button type="submit" class="col-3 btn btn-primary me-2">Ingresar</button>
+				<div class="row border border-danger p-0 justify-content-end">
+					<button type="submit" class="col-2 btn btn-primary ">Ingresar</button>
 				</div>
 			</form>
 

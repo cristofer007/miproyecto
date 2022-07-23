@@ -7,16 +7,16 @@
 
  	if (!is_null($data))
 	{
-		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+		$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
 		$stmt = $dbh->prepare("
-		SELECT titulo, fuentes.fuente, estados_tickets.estado, areas.area, codigo, tipo_problema AS tipo,
-		fecha, fecha_exp, usuarios.nombre, usuarios.correo, desc_problema, resolucion_problema, especialistas.nombre AS tecnico, especialistas.email AS correo_tecnico, especialistas.telefono AS telefono_tecnico
+		SELECT titulo, fuentes.fuente, estados_tickets.estado, departamentos.departamento, codigo, tipo_problema AS tipo,
+		fecha, usuarios.nombre, usuarios.correo, desc_problema, resolucion_problema, tecnicos.nombre AS tecnico, tecnicos.email AS correo_tecnico, tecnicos.telefono AS telefono_tecnico
 		FROM tickets 
-		inner join usuarios on id_solicitante = usuarios.id
-		inner join fuentes on fuentes.id_fuente = tickets.id_fuente
-		inner join estados_tickets on estados_tickets.id_estado = tickets.id_estado
-		inner join areas on areas.id_area = tickets.id_area
-		LEFT join especialistas on especialistas.id_especialista = tickets.id_especialista
+		inner join usuarios on id_solicitante = usuarios.Id
+		inner join fuentes on id_fuente = tickets.fuente
+		inner join estados_tickets on id_estado = tickets.estado
+		inner join departamentos on id_departamento = tickets.departamento
+		LEFT join tecnicos on tecnicos.id_tecnico = tickets.id_tecnico
 		WHERE codigo = :codigo
 		");
 		$stmt->bindParam(':codigo', $data->codigo);

@@ -7,7 +7,7 @@ use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\ModuloSolicitudes\SolicitudesController;
 /*
 |--------------------------------------------------------------------------
-| Web Routes.
+| Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -32,7 +32,7 @@ Route::get('/dashboard', function () {
 //------------------------------------------------------------------------------
 //                  VISTAS.
 //------------------------------------------------------------------------------
-Route::get('/vistaindex', [SolicitudesController::class, 'getVistaIndex']);
+
 Route::get('/vistaforo', [ForoController::class, 'getVistaForo'])->name('vistaforo');
 Route::get('/vistagestionpersonas', [PersonasController::class, 'getVistaPersonas'])->name('vistagestionpersonas');
 Route::get('/vistarespuestas', [SolicitudesController::class, 'getVistaRespuestas']);
@@ -42,8 +42,6 @@ Route::get('/vistalogin', [UsuariosController::class, 'getVistaLogin']);
 
 Route::get('/vistaconsultar', [SolicitudesController::class, 'getVistaConsultar']);
 Route::get('/vistaadmin', [SolicitudesController::class, 'getVistaAdmin']);
-Route::get('/vistagestioncanales', [ForoController::class, 'getVistaGestionCanales']);
-Route::get('/vistagestionusuarios', [UsuariosController::class, 'getVistaGestionUsuarios']);
 Route::get('/vistaespecialista', [SolicitudesController::class, 'getVistaEspecialista']);
 //Route::get('/vistamensajes', [Controller::class, 'getVistaMensajes'])->name('vistamensajes');
         

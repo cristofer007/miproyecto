@@ -9,7 +9,7 @@
 
  	if (!is_null($data))
 	{
-		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+		$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
 		$stmt = $dbh->prepare("DELETE FROM tickets WHERE codigo = :codigo");
 		foreach($data as $codigo)
 		{

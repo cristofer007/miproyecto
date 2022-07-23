@@ -38,7 +38,7 @@ if (!empty($_GET))
 	if ( isset($_GET['cliente']))
         {         
             $cliente = $_GET['cliente'];
-            $extra .= " AND ( usuarios.Nombre LIKE ? OR usuarios.email LIKE ?  OR 
+            $extra .= " AND ( usuarios.nombre LIKE ? OR usuarios.email LIKE ?  OR 
                               invitados.nombres LIKE ? OR invitados.email LIKE ?   
                              )";        
 	}
@@ -241,7 +241,7 @@ if (!empty($_GET))
                                             </div>
                                                 <div id="eliminarBoton" class="container ms-0 h-100 border border-danger p-0" style="position:relative;width:10%; height:3em; " onClick="eliminarDialog()">
                                                     <div class="row border h-100 border-primary mx-0 text-center px-0" style="width:100%">
-                                                        <img class="w-100 m-0" src="iconos/eliminarIcono.png"  width="100%" style="height:2em;" id="eliminarBtn">
+                                                        <img class="w-100 m-0" src="iconos/eliminarIcono.png"  style="height:2em; width:100%" id="eliminarBtn">
                                                     </div>
                                                     <div class="h-25 row fw-bold text-center px-0 mx-auto" style="font-size:0.75em">
                                                         Eliminar
@@ -703,40 +703,40 @@ if (!empty($_GET))
 				xhr.onload = function (e) {
 					if (xhr.readyState === 4) {
 						if (xhr.status === 200) {
-							var response = JSON.parse(xhr.response);
-							if(response === false)
-								window.location.reload(true); 
-							console.log(response);
-							document.getElementById("oTitulo").innerHTML = response.titulo;
-							document.getElementById("oFuente").innerHTML = response.fuente;
-							document.getElementById("oDepartamento").innerHTML = response.departamento;
-							document.getElementById("oTema").innerHTML = response.tipo;
-							document.getElementById("oEstado").innerHTML = response.estado;
-							document.getElementById("oFecha").innerHTML = response.fecha;
-							document.getElementById("oCodigo").innerHTML = response.codigo;
-							document.getElementById("oProblema").innerHTML = response.problema;
-							document.getElementById("oCliente").innerHTML = response.nombre;
-							document.getElementById("oCorreo").innerHTML = response.correo;
-							document.getElementById("oProblema").innerHTML = response.desc_problema;
-							if(response.tecnico !== null && response.correo_tecnico !== null)
-							{
-								document.getElementById("modalOpt").innerHTML = `
-								<div class="row align-items-center mb-1">
-									<div class="col-3 fw-bold">Técnico:</div>
-									<div class="col">${response.tecnico}</div>
-									<div class="w-100 d-block d-lg-none"></div>
-									<div class="col-3 col-lg-1 fw-bold">Correo:</div>
-									<div class="col">${response.correo_tecnico}</div>
-								</div>
-								<div class="fw-bold mt-4">Respuesta del técnico:</div>
-								<textarea class="boxsizingBorder" readonly>${response.resolucion_problema}</textarea>
-								`;
-							}
-							else
-								document.getElementById("modalOpt").innerHTML = "";
-							
-							var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-							myModal.toggle();
+                                                    var response = JSON.parse(xhr.response);
+                                                    if(response === false)
+                                                        window.location.reload(true); 
+                                                    console.log(response);
+                                                    document.getElementById("oTitulo").innerHTML = response.titulo;
+                                                    document.getElementById("oFuente").innerHTML = response.fuente;
+                                                    document.getElementById("oDepartamento").innerHTML = response.departamento;
+                                                    document.getElementById("oTema").innerHTML = response.tipo;
+                                                    document.getElementById("oEstado").innerHTML = response.estado;
+                                                    document.getElementById("oFecha").innerHTML = response.fecha;
+                                                    document.getElementById("oCodigo").innerHTML = response.codigo;
+                                                    document.getElementById("oProblema").innerHTML = response.problema;
+                                                    document.getElementById("oCliente").innerHTML = response.nombre;
+                                                    document.getElementById("oCorreo").innerHTML = response.correo;
+                                                    document.getElementById("oProblema").innerHTML = response.desc_problema;
+                                                    if(response.tecnico !== null && response.correo_tecnico !== null)
+                                                    {
+                                                        document.getElementById("modalOpt").innerHTML = `
+                                                        <div class="row align-items-center mb-1">
+                                                            <div class="col-3 fw-bold">Técnico:</div>
+                                                            <div class="col">${response.tecnico}</div>
+                                                            <div class="w-100 d-block d-lg-none"></div>
+                                                            <div class="col-3 col-lg-1 fw-bold">Correo:</div>
+                                                            <div class="col">${response.correo_tecnico}</div>
+                                                        </div>
+                                                        <div class="fw-bold mt-4">Respuesta del técnico:</div>
+                                                        <textarea class="boxsizingBorder" readonly>${response.resolucion_problema}</textarea>
+                                                        `;
+                                                    }
+                                                    else
+                                                            document.getElementById("modalOpt").innerHTML = "";
+
+                                                    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                                                    myModal.toggle();
 
 						} else {
 							console.error(xhr.statusText);

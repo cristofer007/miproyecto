@@ -7,9 +7,9 @@
 
  	if (!is_null($data))
 	{
-		$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+		$dbh = new PDO('mysql:host=localhost;dbname=base', "root", "");
 		$stmt = $dbh->prepare("UPDATE tickets
-			SET id_especialista = ?, id_estado = 1
+			SET id_tecnico = ?, estado = 1
 			WHERE codigo = ?");
 		$stmt->bindParam(1, $data->tecnico);
 		$stmt->bindParam(2, $data->codigo);

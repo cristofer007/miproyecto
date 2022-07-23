@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ModuloSolicitudes;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class SolicitudesController extends Controller
 {
@@ -17,9 +18,10 @@ class SolicitudesController extends Controller
         return view('vistaconsultar');
     }
     
-    public function getVistaSolicitud()
+    public function getVistaUsuario($id_cuenta)
     {
-        return view('vistasolicitud');
+        Log::info($id_cuenta);
+        return view('vistausuario')->with('id_cuenta',$id_cuenta);
     }
     
     public function getVistaRespuestas()
@@ -27,9 +29,9 @@ class SolicitudesController extends Controller
         return view('vistarespuestas');
     }
     
-    public function getVistaAdmin()
+    public function getVistaAdmin($id_cuenta)
     {
-        return view('vistaadmin');
+        return view('vistaadmin')->with('id_cuenta', $id_cuenta);
     }
     
     public function getVistaNuevoTicket()
@@ -37,8 +39,8 @@ class SolicitudesController extends Controller
         return view('vistanuevoticket');
     }
     
-    public function getVistaEspecialista()
+    public function getVistaEspecialista($id_cuenta)
     {
-        return view('vistaespecialista');
+        return view('vistaespecialista')->with('id_cuenta', $id_cuenta);
     }
 }

@@ -14,19 +14,30 @@ if (!is_null($data))
 	$response = array();
 	if($result != false)
 	{
-		if($result['token'] == 'ADMIN')
-		{
-			$response = array("resp"=>0, "token"=>$result['token']);
-			//header("Location: /admin.php");
-		}
-		else
-		{
-			$response = array("resp"=>1, "token"=>$result['token']);
-			//header("Location: /tecnico.php?t=".$result['token']);
-		}
+            if($result['token'] == 'ADMIN')
+            {
+                    $response = array("resp"=>0, "token"=>$result['token']);
+                    //header("Location: /admin.php");
+            }
+            else
+            {
+                if ($result['token'] == 'ESPECIALISTA')
+                {
+                    $response = array("resp"=>1, "token"=>$result['token']);
+                }
+
+                    //header("Location: /tecnico.php?t=".$result['token']);
+                else
+                {    
+                    $response = array("resp"=>2, "token"=>$result['token']);
+                }   
+            }
 	}
-	else
-		$response = array("resp"=>-1);
+        else 
+        {
+            $response = array("resp"=>-1); 
+        }
+	
 	echo(json_encode($response));
 }
 ?>

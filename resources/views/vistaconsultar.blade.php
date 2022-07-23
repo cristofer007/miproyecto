@@ -7,107 +7,68 @@
 
 		<!-- Bootstrap CSS -->
 		<link href="/styles/style.css" rel="stylesheet">
-                <script src="bootstrap.bundle.min.js"></script>
-                <script src="popper.min.js"></script>
-                <link href="bootstrap.min.css" rel="stylesheet">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-                <script src="anime.min.js"></script>
-		<title>Sistema de ayuda</title>
-                
-                <style>
-                
-                    .elementoLista
-                    {
-                        
-                        transition: transform 2s;
-                    }
-                    
-                    .imagenVerDetalles
-                    {
-                        opacity: 0.65;
-                        transition: transform 0.5s, opacity 0.5s;
-                    }
-                    
-                    .imagenVerDetalles:hover
-                    {
-                        opacity: 1;
-                        transform: rotate(-45deg);    
-                    }
-                    
-                    
-                </style>
+
+		<title>Tele-Ticket</title>
 	</head>
-	<!--*****-->
-	<!--***************************************************************************************************************************
-********************************  BODY  **************************************************************************************************************
-*******************************************************************************************************************************-->
-
-	
 	<body>
-                <header class="text-center" style="height: 20%;" >
-                    <h2>Sistema de ayuda</h2>
-                    
-                    <div class="row justify-content-end">
-                        <a class="col text-start ms-3" href="/vistaindex" style="text-decoration: none">
-                            <div>
-                                <img src="iconos/volverIcono.png" style="height:2em">
-                                <small>Volver</small>
-                            </div>
-                        </a>
-                        <div class="col-auto">
-                            <a class="btn btn-primary me-3" href="/vistalogin">Ingresar</a>
-                        </div>
-                    </div>
-                </header>
-		<div class="container">
-			
-			
 
-			<div class="container bg-light mb-4 mt-2 p-2">
-				<p class="text-white p-1 fw-bold text-center" style="background-image: linear-gradient(50deg, #457fca, #5691c8); color:white;">Consulta de solicitud</p>
+		<div class="container">
+			<h2>Tele-Ticket</h2>
+			<div class="row justify-content-end">
+				<div class="col-auto">
+					<a class="btn btn-primary" href="/">Regresar</a>
+				</div>
+				
+			</div>
+
+			<div class="container bg-light mb-4 mt-2 p-2 border">
+				<p class="text-white bg-primary p-1">Consulta de solicitud</p>
 				<p class="text-muted text-center">Para consultar el estado de su solicitud, ingrese la dirección de correo electronico con la cual realizó la misma.</p>
 				<div class="mb-3">
-					<label for="correoI" class="form-label">Correo electrónico:</label>
+					<label for="correoI" class="form-label">Correo electronico</label>
 					<input type="email" class="form-control" id="correoI"  onChange="consultar()">
 				</div>
-                                <div class="text-end">
-				<button type="button" class="btn btn-primary" onClick="consultar()">Consultar</button>
-                                </div>
-                                <div>
-				<div id="errorO"></div>
+				<div class="row mx-auto" style="overflow:hidden;">
+					<div class="col-2 d-inline mx-auto " >
+						<button type="button" class="btn btn-primary d-block mx-auto" onClick="consultar()">Consultar</button>
+					</div>
+					<div class="col-10 d-inline p-0 m-0"  id="errorO">
+					</div>
+				</div>
 				<?php
 					if (!empty($_GET) && isset($_GET['mail']))
 					{
 						$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
 						$stmt = $dbh->prepare(
-						"SELECT * from invitados WHERE email = ?");
+						"SELECT * from usuarios WHERE Correo = ?");
 						$stmt->bindParam(1, $_GET['mail']);
 						$stmt->execute();
 						if($stmt->rowCount() > 0)
 						{
 							$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 							echo <<<EOT
-							<p class="text-white p-1 mt-4 mb-2 fw-bold text-center" style="background-image: linear-gradient(50deg, #457fca, #5691c8); color:white;">Resultados de la consulta</p>
+							<p class="text-white bg-primary p-1 mt-4 mb-2">Resultados de la consulta</p>
 							<div class="row align-items-center mb-1">
 								<div class="col-3 fw-bold">Cliente:</div>
-								<div class="col">{$usuario["nombres"]}</div>
+								<div class="col">{$usuario["Nombre"]}</div>
 							</div>
 							<div class="row align-items-center mb-1">
 								<div class="col-3 fw-bold">Correo:</div>
-								<div class="col">{$usuario["email"]}</div>
+								<div class="col">{$usuario["Correo"]}</div>
 							</div>
 							<div class="row align-items-center mb-1">
 								<div class="col-3 fw-bold">Teléfono:</div>
-								<div class="col">{$usuario["telefono"]}</div>
+								<div class="col">{$usuario["Telefono"]}</div>
 							</div>
 							EOT;
 						}
 						$stmt = $dbh->prepare(
-						"SELECT *, invitados.nombres AS cliente, especialistas.nombre AS tecnico, especialistas.email AS correo_tecnico, estados_tickets.estado AS estadodesc
+						"SELECT *, usuarios.nombre AS cliente, especialistas.nombre AS tecnico, especialistas.email AS correo_tecnico, estados_tickets.estado AS estadodesc
 						from tickets
-						inner join invitados on id_invitado = invitados.email
+						inner join usuarios on id_solicitante = usuarios.Id 
 						inner join estados_tickets on estados_tickets.id_estado = tickets.id_estado 
-						LEFT JOIN especialistas ON especialistas.id_especialista = tickets.id_especialista WHERE tickets.id_invitado = ?");
+						LEFT JOIN especialistas ON especialistas.id_especialista = tickets.id_especialista WHERE Correo = ?");
 						$stmt->bindParam(1, $_GET['mail']);
 						$stmt->execute();
 						if($stmt->rowCount() > 0)
@@ -116,26 +77,26 @@
 							<table class="table table-striped mt-4">
 								<thead>
 									<tr>
-										<th class="border border-danger text-center" scope="col">Codigo</th>
-										<th class="border border-danger text-center" scope="col">Fecha</th>
-										<th class="border border-danger text-center" scope="col">Estado</th>
-										<th class="border border-danger text-center" scope="col">Encargado</th>
-										<th class="border border-danger text-center" scope="col text-center">Detalles</th>
+										<th class="text-center col" scope="col">Codigo</th>
+										<th class="text-center col" scope="col">Fecha</th>
+										<th class="text-center col" scope="col">Estado</th>
+										<th class="text-center col" scope="col">Encargado</th>
+										<th class="text-center col" scope="col">Detalles</th>
 									</tr>
 								</thead>
 								<tbody id="resultsTable">
 									<?php
 									foreach($stmt as $row)
 									{
-										echo '<tr class="border border-danger text-center elementoLista" >';
-										echo '<td class="border border-danger text-center">'. $row['codigo'] .'</td>';
-										echo '<td class="border border-danger text-center">'. $row['fecha'] .'</td>';
-										echo '<td class="border border-danger text-center">'. $row['estadodesc'] .'</td>';
+										echo '<tr>';
+										echo '<td class=\'text-center border\'>'. $row['codigo'] .'</td>';
+										echo '<td class=\'text-center border\'>'. $row['fecha'] .'</td>';
+										echo '<td class=\'text-center border\'>'. $row['estadodesc'] .'</td>';
 										if(!is_null($row['tecnico']))
-											echo '<td>'. $row['tecnico'] .'</td>';
+											echo '<td class=\'text-center border\'>'. $row['tecnico'] .'</td>';
 										else
-											echo '<td>Sin asignar</td>';
-										echo '<td class="border border-danger"> <a class="text-decoration-none cursorClickIcon text-center" onClick="detalles('.$row['codigo'].')"> <img class="imagenVerDetalles" src="iconos/verDetallesIcono.png" height="25em"> </a></td>';
+											echo '<td class=\'text-center border\'>Sin asignar</td>';
+										echo '<td class=\'text-center border\'> <a class="text-decoration-none cursorClickIcon" onClick="detalles('.$row['codigo'].')">Ver detalles</a></td>';
 										echo '</tr>';
 									}
 									?>
@@ -151,14 +112,12 @@
 				?>
 			</div>
 		</div>
-            
-            
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
-					<div class="modal-header container text-center w-100" style="background-image: linear-gradient(50deg, #457fca, #5691c8); color:white">
-                                                <h5 class="modal-title text-center" id="exampleModalLabel">Detalles de consulta</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>                    
+					<div class="modal-header text-center border">
+						<h5 class="modal-title border mx-auto" id="exampleModalLabel">Detalles del ticket</h5>
+						<button type="button" class="btn-close border" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<div class="row align-items-center mb-1">
@@ -172,7 +131,7 @@
 							<div class="col" id="oFecha"></div>
 						</div>
 						<div class="row align-items-center mb-1">
-							<div class="col-3 fw-bold">Usuario:</div>
+							<div class="col-3 fw-bold">Cliente:</div>
 							<div class="col" id="oCliente"></div>
 							<div class="w-100 d-block d-lg-none"></div>
 							<div class="col-3 col-lg-1 fw-bold">Correo:</div>
@@ -194,7 +153,6 @@
 							<div class="col-3 fw-bold">Fuente:</div>
 							<div class="col" id="oFuente"></div>
 						</div>
-                                                <hr>
 						<div class="fw-bold mt-4">Descripcion del problema:</div>
 						<textarea id="oProblema" class="boxsizingBorder" readonly></textarea>
 						<div id="modalOpt"></div>
@@ -206,14 +164,6 @@
 			</div>
 		</div>
 		<script>
-                    var elementosListado = document.querySelectorAll('.elementoLista');
-                    anime({
-                            targets: elementosListado,
-                            translateX: 0,
-                            opacity: '100%',
-                            delay: anime.stagger(150)
-                        });
-                    
 			function err(message)
 			{
 				document.getElementById("errorO").innerHTML = `<p class="text-danger m-2">${message}</p>`;
@@ -230,7 +180,7 @@
 				}
 				else if (!document.getElementById("correoI").checkValidity())
 				{
-					err("El correo es inválido.");
+					err("El correo es invalido.");
 					return;
 				}
 				window.location.href = '/vistaconsultar.blade.php?mail='+correo;
@@ -295,14 +245,9 @@
 				};
 				xhr.send(JSON.stringify(obj));
 			}
+
 			
 		</script>
-                
-                <script>
-                    
-                    
-                </script>
-                
 		<!-- Bootstrap Bundle with Popper -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 	</body>

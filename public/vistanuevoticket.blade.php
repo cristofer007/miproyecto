@@ -46,7 +46,7 @@
             <div style="position: absolute; top:7.5%; height:85.5%; width:100% ">
                 <div class="row w-100 mx-auto" style="position: absolute; height:5.5%">
                         <div class="col  text-center p-0" >
-                                <a href="/vistaadmin" class="align-middle" >Nuevos</a>
+                                <a href="/vistaadmin.blade.php?tipo=0" class="align-middle" >Nuevos</a>
                         </div>
                         <div class="col  text-center p-0">
                                 <a href="/vistaadmin.blade.php?tipo=1" class="align-middle">Asignados</a>
@@ -58,7 +58,7 @@
                                 <b class="align-middle">Nuevo ticket </b>
                         </div>
                 </div>
-		<div class="container border border-danger p-1 m-0 bg-primary" style="position:absolute; width: 100% ;height:95% ;top:5%; overflow:scroll">
+		<div class="container border p-1 m-0 bg-primary" style="position:absolute; width: 100% ;height:95% ;top:5%; overflow:scroll">
                         
 			<div class="container bg-light mb-4 p-2">
 				
@@ -73,22 +73,26 @@
 					<p class="text-white bg-primary py-1 w-100 fw-bold text-center">Usuario</p>
 					<div class="container pb-3">
 						<div class="mb-1">
+                                                    <h6 class="text-center ">
+                                                        Seleccione un usuario
+                                                    </h6>
+                                                    <br>
 							<div class="row justify-space-evenly">
 								<div class="col">
-									<label class="form-label">Nombre: <p id="nombreI">Seleccione un usuario</p></label>
+									<label class="form-label">Nombre: <p id="nombreI"></p></label>
 								</div>
 								<div class="col">
-									<button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Cambiar usuario</button>
+									<button  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Seleccionar</button>
 								</div>
 							</div>
 						</div>
 						<div class="mb-2">
 							<label class="form-label">Correo: <p id="correoI"></p></label>
 						</div>
-						<div class="mb-2 form-check">
+<!--						<div class="mb-2 form-check">
 							<input type="checkbox" class="form-check-input" id="exampleCheck1">
-							<label class="form-check-label" for="exampleCheck1">Aviso ticket</label> <!-- Sin input -->
-						</div>
+							<label class="form-check-label" for="exampleCheck1">Aviso ticket</label>  Sin input 
+						</div>-->
 					</div>
 					<p class="text-white bg-primary py-1 w-100 fw-bold text-center">Ticket</p>
 					<div class="container pb-3">
@@ -99,16 +103,7 @@
 									<input type="text" class="form-control" id="tituloI">
 								</div>
 							</div>
-							<div class ="col">
-								<div class="mb-2">
-									<label for="estadoI" class="form-label">Estado inicial</label>
-									<select class="form-select" id="estadoI" aria-label="Select">
-										<option value="0" selected>Abierto</option>
-										<option value="1">Asignado / Cerrado</option>
-										<option value="2">Resuelto</option>
-									</select>
-								</div>
-							</div>
+
 						</div>
 						<div class="mb-2">
 							<label for="fuenteI" class="form-label">Fuente</label>
@@ -119,32 +114,63 @@
 								<option value="3">Formulario</option>
 							</select>
 						</div>
-						<div class="mb-2">
-							<label for="temaI" class="form-label">Tema asociado</label>
-							<input class="form-control" type="text" name="city" list="temalist" id="temaI">
-							<datalist id="temalist">
-								<option value="Problemas de hardware">
-								<option value="Problemas de conexión">
-								<option value="Problemas de acceso">
-								<option value="Error de software">
-							</datalist>
-						</div>
-						<div class="mb-2">
-							<label for="departamentoI" class="form-label">Departamento</label>
-							<select class="form-select" id="departamentoI" aria-label="Select">
-								<option value="0" selected>Soporte</option>
-								<option value="1">Redes</option>
-								<option value="2">Servidores</option>
-							</select>
-						</div>
+						
 						<div class="mb-2">
 							<label for="problemaI" class="form-label">Descripcion del problema</label>
 							<textarea class="form-control" id="problemaI" row=3></textarea>
 						</div>
-						<div class="mb-2">
+<!--						<div class="mb-2">
 							<label for="respuestaI" class="form-label">Respuesta inicial</label>
 							<textarea class="form-control" id="respuestaI" row=3></textarea>
+						</div>-->
+                                            
+<!--      *******************************************************************+******************************************-->
+                                            <p class="text-white bg-primary py-1 w-100 mx-0 fw-bold text-center">Encargado</p>
+                                                <div class="mb-2">
+                                                        <?php
+                                                            $dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
+                                                            $stmt = $dbh->prepare("SELECT * FROM areas WHERE id_area != -1 ORDER BY area");
+                                                            $stmt->execute();
+
+                                                        ?>
+							<label for="departamentoI" class="form-label">Área</label>
+                                                        
+							<select class="form-select" id="departamentoI" aria-label="Select">
+                                                            <option value="-1"> Seleccione un área o departamento</option>
+                                                            <?php
+                                                                    if ($stmt->rowCount() > 0)
+                                                                    {
+                                                                        foreach($stmt as $row)
+                                                                        {
+                                                                            echo '<option value=" ' . $row['id_area'] . '">' . $row['area'] . '</option>';
+                                                                        }
+                                                                    }
+                                                                ?>
+							</select>
 						</div>
+                                            
+                                                <div class="mb-2" style="height:31.5%">
+                                                        <label for="especialistaI" class="form-label">Especialista </label>
+
+                                                        <div class="row p-0 border w-100 mx-auto text-white fw-bold" style="background-image: linear-gradient(50deg, #2193b0, #6dd5ed); ">
+                                                            <div class="col-7 border text-center">
+                                                                Nombre
+                                                            </div>
+                                                            <div class="col-5 border text-center">
+                                                                Cargo
+                                                            </div> 
+                                                        </div>
+                            <!-- -- ---LISTA- ---->     <ul id="listaEspecialistas" class="list-group w-100 border bg-white bg-gradient" style="overflow-y:scroll; height:55%">
+
+                                                        </ul>
+                                                        <div class="row w-100 mx-auto text-center" style="height:15%">
+                                                            <img id="botonDeseleccionar" hidden src="/iconos/deseleccionarIcono.png" style="height:78%; width: 5.5%; display:block; margin-left:auto; margin-right:1%" class="px-0">
+                                                        </div>
+                                                </div>
+<!--          *******************************************************************+******************************************-->
+                                        
+                                        
+                                        
 					</div>
 					<p class="text-danger" id="errorO"></p>
                                         <div class="text-end">
@@ -160,11 +186,11 @@
 		var usrList = [
 			<?php
 				$dbh = new PDO('mysql:host=localhost;dbname=teleticket', "root", "");
-				$stmt = $dbh->prepare("SELECT * from Usuarios");
+				$stmt = $dbh->prepare("SELECT * from usuarios");
 				$stmt->execute();
 				foreach($stmt as $row)
 				{
-					echo '{ Nombre: "'. $row['Nombre'] . '", Correo: "'. $row['Correo'] .'" },';
+                                    echo '{ Nombre: "'. $row['nombres'] . '", Correo: "'. $row['email'] .'" },';
 				}
 			?>
 		];
@@ -174,12 +200,11 @@
 			<div class="modal-dialog">
 				<div class="modal-content p-0" >
 					<div class="modal-header text-white p-2 w-100" style="position:sticky; background-image:linear-gradient(50deg, #457fca, #5691c8)">
-						<h5 class="modal-title " id="exampleModalLabel">Cambiar usuario</h5>
+						<h5 class="modal-title " id="exampleModalLabel">Seleccionar usuario</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body" >
-                                        
-					<form class="">
+<!--                                        <form class="">
 						<p class="lead fw-bold text-center">Agregar usuario</p>
 						<div class="mb-3">
 							<label for="nombreIMf" class="form-label">Nombre</label>
@@ -193,7 +218,7 @@
                                                     <button type="button" class="btn btn-primary" onClick="addUser()" data-bs-dismiss="modal">Agregar</button>
                                                 </div>
                                         </form>
-                                        <hr class="w-100">
+                                        <hr class="w-100">-->
 					<p class="lead fw-bold text-center">Buscar existente</p>
 					<ul class="list-group" id="listaModal">
 												

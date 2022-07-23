@@ -24,5 +24,5 @@ class UsuariosController extends Controller
         return view('vistagestionusuarios');
     }
     
-    
+   
 }
